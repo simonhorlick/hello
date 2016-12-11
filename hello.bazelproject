@@ -1,0 +1,13 @@
+workspace_type: java
+
+directories:
+  java
+  javatests
+  protos
+
+targets:
+  //java/me/horlick/helloworld:greeter_bin
+  //javatests/me/horlick/helloworld:greeter_test
+
+test_sources:
+  javatests
