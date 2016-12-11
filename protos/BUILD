@@ -1,5 +1,7 @@
 load("@com_github_simonhorlick_base//tools/build_rules:genproto.bzl", "proto_library", "java_proto_library")
 
+package(default_visibility = ["//visibility:public"])
+
 proto_library(
     name = "helloworld_proto",
     srcs = ["helloworld.proto"],
