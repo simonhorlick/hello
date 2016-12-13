@@ -4,6 +4,7 @@ directories:
   java
   javatests
   protos
+  docker
 
 targets:
   //java/me/horlick/helloworld:greeter_bin
