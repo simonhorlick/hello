@@ -4,13 +4,14 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.ServerInterceptors;
 import java.io.IOException;
-import java.util.logging.Logger;
+import me.dinowernli.grpc.prometheus.Configuration;
 import me.dinowernli.grpc.prometheus.MonitoringServerInterceptor;
-import me.dinowernli.grpc.prometheus.MonitoringServerInterceptor.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class GreeterServer {
 
-  private static final Logger logger = Logger.getLogger(GreeterServer.class.getName());
+  private static final Logger logger = LoggerFactory.getLogger(GreeterServer.class);
 
   private static final int port = 50051;
 
@@ -18,7 +19,7 @@ class GreeterServer {
 
   void start() throws IOException {
     MonitoringServerInterceptor monitoringInterceptor =
-        MonitoringServerInterceptor.create(Configuration.cheapMetricsOnly());
+        MonitoringServerInterceptor.create(Configuration.allMetrics());
 
     server =
         ServerBuilder.forPort(port)

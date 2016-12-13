@@ -2,16 +2,16 @@ package me.horlick.apps.greeter;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import me.horlick.helloworld.nano.GreeterGrpc;
 
 public class NameEntryFragment extends Fragment {
 
-  public static Fragment newInstance() {
+  public static Fragment newInstance(GreeterGrpc.GreeterFutureStub stub) {
     return new NameEntryFragment();
   }
 
@@ -29,7 +29,8 @@ public class NameEntryFragment extends Fragment {
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            Log.i("NameEntryFragment", name.getText().toString());
+            ((GreeterActivity) getActivity())
+                .navigateToGreetingDisplayFragment(name.getText().toString());
           }
         });
 

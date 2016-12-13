@@ -7,9 +7,12 @@ java_library(
         "GreeterService.java",
     ],
     deps = [
+        "//java/me/horlick/metrics",
         "//protos:helloworld_java_grpc",
         "@grpc_java//:grpc-java",
-        "@me_dinowernli_java_grpc_prometheus//jar",
+        "@io_prometheus_simpleclient//jar",
+        "@me_dinowernli_java_grpc_prometheus//src/main/java/me/dinowernli/grpc/prometheus",
+        "@org_slf4j_slf4j_api//jar",
     ],
 )
 
@@ -19,7 +22,11 @@ java_binary(
     main_class = "me.horlick.helloworld.GreeterApplication",
     runtime_deps = [
         "@grpc_java//:grpc-netty",
-        "@io_prometheus_simpleclient//jar",
     ],
-    deps = [":greeter_lib"],
+    deps = [
+        ":greeter_lib",
+        "//java/me/horlick/metrics",
+        "@io_prometheus_simpleclient//jar",
+        "@org_slf4j_slf4j_simple//jar",
+    ],
 )
