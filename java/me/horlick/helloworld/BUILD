@@ -30,3 +30,13 @@ java_binary(
         "@org_slf4j_slf4j_simple//jar",
     ],
 )
+
+docker_build(
+  name = "greeter_container",
+  base = "//docker:jre",
+  data_path = "/",
+  files = [
+    ":greeter_bin_deploy.jar",
+  ],
+  entrypoint = ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "/java/me/horlick/helloworld/greeter_bin_deploy.jar"],
+)
