@@ -1,4 +1,4 @@
-load("@com_github_simonhorlick_base//tools/build_rules:genproto.bzl", "proto_library", "java_proto_library")
+load("@com_github_simonhorlick_base//tools/build_rules:genproto.bzl", "proto_library", "java_proto_library", "javanano_proto_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -9,6 +9,13 @@ proto_library(
 
 java_proto_library(
     name = "helloworld_java_grpc",
+    deps = [
+        ":helloworld_proto",
+    ],
+)
+
+javanano_proto_library(
+    name = "helloworld_javanano_grpc",
     deps = [
         ":helloworld_proto",
     ],

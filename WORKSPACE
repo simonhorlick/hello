@@ -17,3 +17,10 @@ java_test_repositories()
 rpc_repositories()
 
 docker_base_repositories()
+
+android_sdk_repository(
+    name = "androidsdk",
+    api_level = 23,
+    build_tools_version = "23.0.3",
+    path = "/Users/simon/Library/Android/sdk",
+)
