@@ -1,8 +1,10 @@
 package me.horlick.helloworld;
 
+import com.google.common.net.HostAndPort;
 import io.prometheus.client.CollectorRegistry;
-import java.io.IOException;
 import me.horlick.metrics.MetricsServer;
+
+import java.io.IOException;
 
 public class GreeterApplication {
 
@@ -14,7 +16,10 @@ public class GreeterApplication {
       metrics = new MetricsServer(CollectorRegistry.defaultRegistry, 9090);
       metrics.start();
 
-      GreeterServer server = new GreeterServer();
+      // Connect to the db.
+      GreetingsRepositoryMySQL db =
+          GreetingsRepositoryMySQL.create(HostAndPort.fromString("104.199.226.139:15991"));
+      GreeterServer server = new GreeterServer(db);
 
       // We're ready so start the RPC server and block forever.
       server.start();

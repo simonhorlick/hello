@@ -14,7 +14,7 @@ import java.net.InetSocketAddress;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class GreetingsRepositoryMySQL implements GreetingsRepository {
+class GreetingsRepositoryMySQL implements GreetingsRepository {
 
   private final Context ctx;
   private final VTGateBlockingConn conn;
@@ -24,8 +24,7 @@ public class GreetingsRepositoryMySQL implements GreetingsRepository {
     this.conn = conn;
   }
 
-  public static GreetingsRepositoryMySQL create() {
-    HostAndPort hostAndPort = HostAndPort.fromString("104.199.226.139:15991");
+  public static GreetingsRepositoryMySQL create(HostAndPort hostAndPort) {
     InetSocketAddress addr =
         new InetSocketAddress(hostAndPort.getHostText(), hostAndPort.getPort());
     Context ctx = Context.getDefault();

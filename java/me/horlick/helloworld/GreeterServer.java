@@ -3,11 +3,12 @@ package me.horlick.helloworld;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.ServerInterceptors;
-import java.io.IOException;
 import me.dinowernli.grpc.prometheus.Configuration;
 import me.dinowernli.grpc.prometheus.MonitoringServerInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 class GreeterServer {
 
@@ -17,13 +18,19 @@ class GreeterServer {
 
   private Server server;
 
+  private final GreetingsRepository greetingsRepository;
+
+  GreeterServer(GreetingsRepository greetingsRepository) {
+    this.greetingsRepository = greetingsRepository;
+  }
+
   void start() throws IOException {
     MonitoringServerInterceptor monitoringInterceptor =
         MonitoringServerInterceptor.create(Configuration.allMetrics());
 
     server =
         ServerBuilder.forPort(port)
-            .addService(ServerInterceptors.intercept(new GreeterService(), monitoringInterceptor))
+            .addService(ServerInterceptors.intercept(new GreeterService(greetingsRepository), monitoringInterceptor))
             .build()
             .start();
     logger.info("Server started, listening on " + port);

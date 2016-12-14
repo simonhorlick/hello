@@ -10,6 +10,9 @@ option java_package = "me.horlick.helloworld";
 service Greeter {
   // Builds and returns a greeting for the name given in HelloRequest.
   rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+  // Return a histogram of all names.
+  rpc GetNames (GetNamesRequest) returns (NameHistogram) {}
 }
 
 // The request message containing the user's name.
@@ -20,4 +23,15 @@ message HelloRequest {
 // The response message containing the greeting.
 message HelloReply {
   string message = 1;
+}
+
+message GetNamesRequest {}
+
+message HistogramEntry {
+  string name = 1;
+  int64 count = 2;
+}
+
+message NameHistogram {
+  repeated HistogramEntry entry = 1;
 }
