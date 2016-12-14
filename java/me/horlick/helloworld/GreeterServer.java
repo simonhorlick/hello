@@ -1,5 +1,6 @@
 package me.horlick.helloworld;
 
+import com.google.common.base.Ticker;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.ServerInterceptors;
@@ -30,7 +31,10 @@ class GreeterServer {
 
     server =
         ServerBuilder.forPort(port)
-            .addService(ServerInterceptors.intercept(new GreeterService(greetingsRepository), monitoringInterceptor))
+            .addService(
+                ServerInterceptors.intercept(
+                    new GreeterService(greetingsRepository, Ticker.systemTicker()),
+                    monitoringInterceptor))
             .build()
             .start();
     logger.info("Server started, listening on " + port);
