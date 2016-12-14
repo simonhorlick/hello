@@ -4,11 +4,7 @@ package(default_visibility = ["//javatests/me/horlick/helloworld:__pkg__"])
 
 java_library(
     name = "greeter_lib",
-    srcs = [
-        "GreeterApplication.java",
-        "GreeterServer.java",
-        "GreeterService.java",
-    ],
+    srcs = glob(["*.java"]),
     deps = [
         "//java/me/horlick/metrics",
         "//protos:helloworld_java_grpc",
