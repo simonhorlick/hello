@@ -1,12 +1,12 @@
 package me.horlick.helloworld;
 
-import com.google.common.base.Ticker;
-import io.grpc.stub.StreamObserver;
-import org.junit.Test;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.google.common.base.Ticker;
+import io.grpc.stub.StreamObserver;
+import org.junit.Test;
 
 public class GreeterServiceTest {
 

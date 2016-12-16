@@ -2,9 +2,8 @@ package me.horlick.helloworld;
 
 import com.google.common.net.HostAndPort;
 import io.prometheus.client.CollectorRegistry;
-import me.horlick.metrics.MetricsServer;
-
 import java.io.IOException;
+import me.horlick.metrics.MetricsServer;
 
 public class GreeterApplication {
 

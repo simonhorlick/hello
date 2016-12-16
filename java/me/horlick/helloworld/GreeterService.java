@@ -3,7 +3,6 @@ package me.horlick.helloworld;
 import com.google.common.base.Ticker;
 import io.grpc.stub.StreamObserver;
 
-
 // A GreeterService implements the Greeter rpc interface by echoing back a
 // greeting in English to the supplied name.
 class GreeterService extends GreeterGrpc.GreeterImplBase {

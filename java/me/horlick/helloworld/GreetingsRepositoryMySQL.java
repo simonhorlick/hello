@@ -38,23 +38,20 @@ class GreetingsRepositoryMySQL implements GreetingsRepository {
 
   @Override
   public void insertGreet(String name, long timeNs) {
-      // Insert this greet into the database.
-      Map<String, Object> values =
-              new ImmutableMap.Builder<String, Object>()
-                      .put("name", name)
-                      .put("time_ns", timeNs)
-                      .build();
-      try {
-          VTGateBlockingTx tx = conn.begin(ctx);
-          tx.execute(
-              ctx,
-              "INSERT INTO greetings (name, time_ns) VALUES (:name, :time_ns)",
-              values,
-              Topodata.TabletType.MASTER);
-          tx.commit(ctx);
-      } catch (SQLException e) {
-          throw new RuntimeException(e);
-      }
+    // Insert this greet into the database.
+    Map<String, Object> values =
+        new ImmutableMap.Builder<String, Object>().put("name", name).put("time_ns", timeNs).build();
+    try {
+      VTGateBlockingTx tx = conn.begin(ctx);
+      tx.execute(
+          ctx,
+          "INSERT INTO greetings (name, time_ns) VALUES (:name, :time_ns)",
+          values,
+          Topodata.TabletType.MASTER);
+      tx.commit(ctx);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
