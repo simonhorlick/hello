@@ -1,0 +1,18 @@
+<div class="container">
+
+  <div class="title">
+    Title
+  </div>
+
+  <div class="description">
+    Description
+  </div>
+
+  <div class="names">
+    <ul>
+      <li ng-repeat="entry in $ctrl.entry">
+        <a>{{entry.name}} {{entry.count}}</a>
+      </li>
+    </ul>
+  </div>
+</div><!--container-->
