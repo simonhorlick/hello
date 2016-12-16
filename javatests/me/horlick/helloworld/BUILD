@@ -8,6 +8,7 @@ java_test(
         "//java/me/horlick/helloworld:greeter_lib",
         "//protos:helloworld_java_grpc",
         "@grpc_java//:stub",
+        "@guava//jar",
         "@hamcrest_core//jar",
         "@junit//jar",
         "@org_mockito_mockito//jar",
