@@ -6,6 +6,7 @@ package(default_visibility = ["//visibility:public"])
 proto_library(
     name = "helloworld_proto",
     srcs = ["helloworld.proto"],
+    deps = ["//third_party/googleapis:annotations_proto"],
 )
 
 java_proto_library(
