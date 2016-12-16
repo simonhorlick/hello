@@ -1,4 +1,4 @@
-load("//tools/build_rules:genproto.bzl", "proto_library")
+load("@com_github_simonhorlick_base//tools/build_rules:genproto.bzl", "proto_library")
 
 licenses(["notice"])
 
