@@ -1,4 +1,5 @@
 load("@com_github_simonhorlick_base//tools/build_rules:genproto.bzl", "proto_library", "java_proto_library", "javanano_proto_library")
+load("@com_github_simonhorlick_base//tools/build_rules:go_genproto.bzl", "go_grpc_gateway_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -19,4 +20,9 @@ javanano_proto_library(
     deps = [
         ":helloworld_proto",
     ],
+)
+
+go_grpc_gateway_library(
+    name = "helloworld_gateway",
+    src = "helloworld.proto",
 )

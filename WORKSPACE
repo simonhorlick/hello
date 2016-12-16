@@ -2,8 +2,19 @@ workspace(name = "com_github_simonhorlick_hello")
 
 local_repository(
     name = "com_github_simonhorlick_base",
-    path = "/Users/simon/projects/base"
+    path = "/Users/simon/projects/base",
 )
+
+# This needs to come before rpc repositories.
+git_repository(
+    name = "io_bazel_rules_go",
+    remote = "https://github.com/bazelbuild/rules_go.git",
+    tag = "0.2.0",
+)
+
+load("@io_bazel_rules_go//go:def.bzl", "go_repositories", "new_go_repository")
+
+go_repositories()
 
 load("@com_github_simonhorlick_base//:java_base_repositories.bzl", "java_base_repositories")
 load("@com_github_simonhorlick_base//:java_test_repositories.bzl", "java_test_repositories")
@@ -27,15 +38,15 @@ android_sdk_repository(
 
 new_git_repository(
     name = "io_vitess",
-    remote = "https://github.com/youtube/vitess.git",
     build_file = "third_party/vitess.BUILD",
+    remote = "https://github.com/youtube/vitess.git",
     tag = "v2.1.0-alpha.1",
 )
 
 maven_jar(
     name = "org_apache_commons_commons_collections4",
     artifact = "org.apache.commons:commons-collections4:4.1",
-    sha1 = "a4cf4688fe1c7e3a63aa636cc96d013af537768e"
+    sha1 = "a4cf4688fe1c7e3a63aa636cc96d013af537768e",
 )
 
 maven_jar(

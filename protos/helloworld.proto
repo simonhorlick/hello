@@ -5,6 +5,8 @@ package hello;
 option java_multiple_files = true;
 option java_package = "me.horlick.helloworld";
 
+import "google/api/annotations.proto";
+
 // A Greeter service simply responds to requests by echoing the name of the
 // requester and a simple hello message.
 service Greeter {
@@ -12,7 +14,11 @@ service Greeter {
   rpc SayHello (HelloRequest) returns (HelloReply) {}
 
   // Return a histogram of all names.
-  rpc GetNames (GetNamesRequest) returns (NameHistogram) {}
+  rpc GetNames (GetNamesRequest) returns (NameHistogram) {
+    option (google.api.http) = {
+      get: "/v1/greeter/names"
+    };
+  }
 }
 
 // The request message containing the user's name.
