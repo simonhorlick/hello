@@ -4,9 +4,13 @@
     <meta charset="utf-8">
     <title>hello</title>
     <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     <script src="bower_components/google-closure-library/closure/goog/base.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="names/names_component.js"></script>
     <script src="names/names_module.js"></script>
     <script src="app_module.js"></script>
@@ -14,7 +18,16 @@
   </head>
   <body>
 
-    <div ng-view></div>
+    <div layout="column" layout-fill>
+      <md-toolbar class="toolbar md-whiteframe-z1">
+        <div class="md-toolbar-tools">
+          <span>greeter</span>
+        </div>
+      </md-toolbar>
+      <md-content class="app-content">
+        <div ng-view></div>
+      </md-content>
+    </div>
 
   </body>
 </html>

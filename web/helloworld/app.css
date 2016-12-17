@@ -1,0 +1,9 @@
+body, .app-content {
+  background-color: #eee;
+  max-height: 100%;
+}
+
+.toolbar {
+  /* Lighter blue than the usual toolbar colour. */
+  background-color: rgb(50,109,230) !important;
+}
