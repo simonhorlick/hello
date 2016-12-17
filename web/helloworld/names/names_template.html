@@ -5,8 +5,12 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-content>
-          <div layout="row" class="layout-row flex-grow" ng-repeat="entry in $ctrl.entry">
-            <div>{{entry.name}} {{entry.count}}</div>
-          </div>
+          <md-list flex>
+            <md-list-item ng-repeat="entry in $ctrl.entry">
+              <p> {{ entry.name }} </p>
+              <p> {{ entry.count }} </p>
+            </md-list-item>
+          </md-list>
         </md-card-content>
       </md-card>
+
