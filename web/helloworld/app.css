@@ -7,3 +7,8 @@ body, .app-content {
   /* Lighter blue than the usual toolbar colour. */
   background-color: rgb(50,109,230) !important;
 }
+
+.toolbar-text {
+  color: rgb(255, 255, 255) !important;
+  font-weight: 500 !important;
+}
