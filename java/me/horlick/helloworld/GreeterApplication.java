@@ -17,7 +17,7 @@ public class GreeterApplication {
 
       // Connect to the db.
       GreetingsRepositoryMySQL db =
-          GreetingsRepositoryMySQL.create(HostAndPort.fromString("104.199.226.139:15991"));
+          GreetingsRepositoryMySQL.create(HostAndPort.fromString("vtgate-asiaeast1c:15991"));
       GreeterServer server = new GreeterServer(db);
 
       // We're ready so start the RPC server and block forever.
