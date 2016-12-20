@@ -1,0 +1,13 @@
+apiVersion: "coreos.com/v1"
+kind: "EtcdCluster"
+metadata:
+  name: "etcd-asiaeast1c"
+spec:
+  size: 3
+  version: "v3.1.0-alpha.1"
+  template:
+    metadata:
+      labels:
+        component: etcd
+        cell: asiaeast1c
+        app: vitess

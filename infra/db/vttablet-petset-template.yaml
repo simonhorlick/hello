@@ -1,0 +1,205 @@
+# A headless service to create DNS records, this also allows us to query all vttablets in a DNS SRV record.
+apiVersion: v1
+kind: Service
+metadata:
+  name: vttablet
+  labels:
+    app: vttablet
+spec:
+  ports:
+    - name: web
+      port: {{port}}
+    - name: grpc
+      port: {{grpc_port}}
+  # *.vttablet.default.svc.cluster.local
+  clusterIP: None
+  selector:
+    app: vttablet
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: vttablet
+spec:
+  serviceName: "vttablet"
+  replicas: 3
+  template:
+    metadata:
+      name: vttablet
+      labels:
+        component: vttablet
+        keyspace: "{{keyspace}}"
+        shard: "{{shard_label}}"
+        cell: "{{cell}}"
+        app: vitess
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      containers:
+        # The vttablet managing this MySQL instance.
+        - name: vttablet
+          image: {{vitess_image}}
+          #livenessProbe:
+          #  httpGet:
+          #    path: /healthz
+          #    port: web
+          #  initialDelaySeconds: 120
+          #  timeoutSeconds: 1
+          volumeMounts:
+            - name: syslog
+              mountPath: /dev/log
+            - name: vtdataroot
+              mountPath: /vt/vtdataroot
+            - name: certs
+              readOnly: true
+              # Mount root certs from the host OS into the location
+              # expected for our container OS (Debian):
+              mountPath: /etc/ssl/certs/ca-certificates.crt
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "50m"
+          ports:
+            - name: web
+              containerPort: {{port}}
+            - name: grpc
+              containerPort: {{grpc_port}}
+          command:
+            - bash
+            - "-c"
+            - >-
+              set -e
+
+              mkdir -p $VTDATAROOT/tmp
+
+              chown vitess:vitess $VTDATAROOT $VTDATAROOT/tmp;
+
+              HOSTNAME=$(hostname)
+
+              # Zero is not a valid uid, so add 100 to everything.
+
+              ORDINAL=${HOSTNAME#*-}
+
+              ORDINAL=$((ORDINAL + 100))
+
+              printf -v ALIAS '%s-%010d' {{cell}} $ORDINAL
+
+              echo "Starting instance $ALIAS from hostname $HOSTNAME"
+
+              su -p -s /bin/bash -c "/vt/bin/vttablet
+              -topo_implementation etcd
+              -etcd_global_addrs http://etcd-global:2379
+              -log_dir $VTDATAROOT/tmp
+              -v 9
+              -alsologtostderr
+              -port {{port}}
+              -grpc_port {{grpc_port}}
+              -service_map 'grpc-queryservice,grpc-tabletmanager,grpc-updatestream'
+              -tablet-path $ALIAS
+              -tablet_hostname $(hostname -i)
+              -init_keyspace {{keyspace}}
+              -init_shard {{shard}}
+              -init_tablet_type {{tablet_type}}
+              -health_check_interval 5s
+              -mysqlctl_socket $VTDATAROOT/mysqlctl.sock
+              -db-config-app-uname vt_app
+              -db-config-app-dbname vt_{{keyspace}}
+              -db-config-app-charset utf8
+              -db-config-dba-uname vt_dba
+              -db-config-dba-dbname vt_{{keyspace}}
+              -db-config-dba-charset utf8
+              -db-config-repl-uname vt_repl
+              -db-config-repl-dbname vt_{{keyspace}}
+              -db-config-repl-charset utf8
+              -db-config-filtered-uname vt_filtered
+              -db-config-filtered-dbname vt_{{keyspace}}
+              -db-config-filtered-charset utf8
+              -enable_semi_sync
+              -enable_replication_reporter
+              -orc_api_url http://orchestrator/api
+              -orc_discover_interval 5m
+              -restore_from_backup {{backup_flags}}" vitess
+        # The actual MySQL database.
+        - name: mysql
+          image: {{vitess_image}}
+          volumeMounts:
+            - name: syslog
+              mountPath: /dev/log
+            - name: vtdataroot
+              mountPath: /vt/vtdataroot
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "50m"
+          command:
+            - bash
+            - "-c"
+            - >-
+              set -v
+
+              mkdir -p $VTDATAROOT/tmp;
+              chown vitess:vitess $VTDATAROOT $VTDATAROOT/tmp;
+
+              HOSTNAME=$(hostname)
+
+              # Zero is not a valid uid, so add 100 to everything.
+
+              ORDINAL=${HOSTNAME#*-}
+
+              ORDINAL=$((ORDINAL + 100))
+
+              # This is somewhat worrying
+
+              printf -v ALIAS '%010d' $ORDINAL;
+              rm -v $VTDATAROOT/vt_${ALIAS}/mysql.sock.lock
+
+              su -p -c "/vt/bin/mysqlctld
+              -log_dir $VTDATAROOT/tmp
+              -alsologtostderr
+              -tablet_uid $ORDINAL
+              -socket_file $VTDATAROOT/mysqlctl.sock
+              -db-config-app-uname vt_app
+              -db-config-app-dbname vt_{{keyspace}}
+              -db-config-app-charset utf8
+              -db-config-allprivs-uname vt_allprivs
+              -db-config-allprivs-dbname vt_{{keyspace}}
+              -db-config-allprivs-charset utf8
+              -db-config-dba-uname vt_dba
+              -db-config-dba-dbname vt_{{keyspace}}
+              -db-config-dba-charset utf8
+              -db-config-repl-uname vt_repl
+              -db-config-repl-dbname vt_{{keyspace}}
+              -db-config-repl-charset utf8
+              -db-config-filtered-uname vt_filtered
+              -db-config-filtered-dbname vt_{{keyspace}}
+              -db-config-filtered-charset utf8
+              -init_db_sql_file $VTROOT/config/init_db.sql" vitess
+          env:
+            - name: EXTRA_MY_CNF
+              value: /vt/config/mycnf/master_mysql56.cnf
+      # Volumes for the pod
+      volumes:
+        - name: syslog
+          hostPath: {path: /dev/log}
+        - name: vtdataroot
+          #emptyDir: {}
+          persistentVolumeClaim:
+            claimName: vtdataroot
+        - name: certs
+          # Uncomment one of the following lines to configure the location
+          # of the root certificates file on your host OS. We need this so
+          # we can import it into the container OS.
+          # If your host OS is Fedora/RHEL:
+          #hostPath: {path: /etc/pki/tls/certs/ca-bundle.crt}
+          # If your host OS is Debian/Ubuntu/Gentoo:
+          hostPath: {path: /etc/ssl/certs/ca-certificates.crt}
+  volumeClaimTemplates:
+  - metadata:
+      name: vtdataroot
+      annotations:
+        volume.alpha.kubernetes.io/storage-class: pd-ssd
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
