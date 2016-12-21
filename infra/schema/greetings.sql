@@ -1,6 +1,6 @@
 CREATE TABLE greetings (
   greeting_id BIGINT AUTO_INCREMENT,
-  name TEXT,
+  name VARCHAR(64),
   time_ns BIGINT,
-  PRIMARY KEY (greeting_id)
+  PRIMARY KEY (greeting_id, name)
 )
