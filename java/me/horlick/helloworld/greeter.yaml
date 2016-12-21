@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: greeter
+  labels:
+    app: greeter
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 50051
+    protocol: TCP
+  selector:
+    app: greeter
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: greeter-deployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: greeter
+    spec:
+      containers:
+      - name: greeter
+        image: asia.gcr.io/sh-compute-projects/greeter_container:v0.1.0
+        # Specify vtgate instance to connect to.
+        args:
+          - vtgate-asiaeast1c:15991
