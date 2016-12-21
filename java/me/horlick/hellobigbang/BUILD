@@ -1,0 +1,41 @@
+load("@bazel_tools//tools/build_defs/docker:docker.bzl", "docker_build")
+
+package(default_visibility = ["//javatests/me/horlick/hellobigbang:__pkg__"])
+
+java_library(
+    name = "hellobigbang_lib",
+    srcs = glob(["*.java"]),
+    deps = [
+        "//java/me/horlick/metrics",
+        "//protos:helloworld_java_grpc",
+        "@grpc_java//:grpc-java",
+        "@io_prometheus_simpleclient//jar",
+        "@io_vitess//:client",
+        "@io_vitess//:client_protos_java",
+        "@me_dinowernli_java_grpc_prometheus//src/main/java/me/dinowernli/grpc/prometheus",
+        "@org_slf4j_slf4j_api//jar",
+    ],
+)
+
+java_binary(
+    name = "hellobigbang_bin",
+    main_class = "me.horlick.hellobigbang.HelloBigBangApplication",
+    runtime_deps = [
+        ":hellobigbang_lib",
+        "@org_slf4j_slf4j_simple//jar",
+    ],
+)
+
+docker_build(
+    name = "hellobigbang_container",
+    base = "//docker:jre",
+    data_path = "/",
+    entrypoint = [
+        "/usr/lib/jvm/java-8-openjdk-amd64/bin/java",
+        "-jar",
+        "/java/me/horlick/hellobigbang/hellobigbang_bin_deploy.jar",
+    ],
+    files = [
+        ":hellobigbang_bin_deploy.jar",
+    ],
+)

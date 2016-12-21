@@ -8,6 +8,7 @@ directories:
 
 targets:
   //java/me/horlick/helloworld:greeter_bin
+  //java/me/horlick/hellobigbang:hellobigbang_bin
   //javatests/me/horlick/helloworld:greeter_test
 
 test_sources:
