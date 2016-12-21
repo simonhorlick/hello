@@ -28,3 +28,9 @@ $ bazel test ...
 ```shell
 $ kubectl create -f java/me/horlick/helloworld/greeter.yaml
 ```
+
+### Upgrade
+
+```shell
+$ ./deploy.sh v0.1.4
+```
