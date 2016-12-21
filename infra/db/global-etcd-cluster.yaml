@@ -5,6 +5,11 @@ metadata:
 spec:
   size: 3
   version: "v3.1.0-alpha.1"
+  backup:
+    snapshotIntervalInSecond: 3600
+    maxBackups: 5
+    volumeSizeInMB: 512
+    storageType: "PersistentVolume"
   template:
     metadata:
       labels:
