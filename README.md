@@ -22,3 +22,9 @@ Similarly, to test all targets run:
 ```shell
 $ bazel test ...
 ```
+
+### Deployment
+
+```shell
+$ kubectl create -f java/me/horlick/helloworld/greeter.yaml
+```
