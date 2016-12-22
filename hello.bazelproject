@@ -1,6 +1,7 @@
 workspace_type: java
 
 directories:
+  go
   java
   javatests
   protos
