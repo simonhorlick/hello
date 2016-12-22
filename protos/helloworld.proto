@@ -31,13 +31,18 @@ message HelloReply {
   string message = 1;
 }
 
+// The GetNames rpc takes no parameters, however this message type is provided
+// in case this changes in the future.
 message GetNamesRequest {}
 
+// The number of times a single name was greeted.
 message HistogramEntry {
   string name = 1;
+  // The total number of times this name has been greeted.
   int64 count = 2;
 }
 
+// A histogram of the number of times each name was greeted.
 message NameHistogram {
   repeated HistogramEntry entry = 1;
 }
