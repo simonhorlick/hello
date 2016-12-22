@@ -39,8 +39,30 @@ $ bazel test ...
 
 ## Deployment
 
+The simplest way to deploy everything on a Google Cloud Platform cluster.
+Otherwise [minikube](https://github.com/kubernetes/minikube#quickstart) offers a way to run a cluster locally.
+
+```shell
+$ gcloud config set compute/zone asia-east1-c
+$ gcloud config set project sh-compute-projects
+
+# List the current available versions
+$ gcloud container get-server-config
+
+# Actually create a cluster.
+$ gcloud container clusters create 'default' \
+    --machine-type n1-standard-1 \
+    --num-nodes 5 \
+    --disk-size 10 \
+    --scopes storage-rw \
+    --zone 'asia-east1-c' \
+    --preemptible \
+    --cluster-version=1.5.1
+```
+
 See database deployment [instructions](/infra/db).
 
+Deploy the `helloworld` app.
 ```shell
 $ kubectl create -f java/me/horlick/helloworld/greeter.yaml
 ```

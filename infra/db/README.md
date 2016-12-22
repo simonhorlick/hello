@@ -9,21 +9,6 @@ First install the command line client,
 $ go get github.com/youtube/vitess/go/cmd/vtctlclient
 ```
 
-```shell
-$ gcloud config set compute/zone asia-east1-c
-$ gcloud config set project sh-compute-projects
-# List the current available versions
-$ gcloud container get-server-config
-$ gcloud container clusters create 'default' \
-    --machine-type n1-standard-1 \
-    --num-nodes 5 \
-    --disk-size 10 \
-    --scopes storage-rw \
-    --zone 'asia-east1-c' \
-    --preemptible \
-    --cluster-version=1.5.1
-```
-
 Vitess requires a cluster of etcd nodes for coordination.
 
 ```shell
