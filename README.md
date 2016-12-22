@@ -62,10 +62,7 @@ $ gcloud container clusters create 'default' \
 
 See database deployment [instructions](/infra/db).
 
-Deploy the `helloworld` app.
-```shell
-$ kubectl create -f java/me/horlick/helloworld/greeter.yaml
-```
+Deploy the [helloworld app](/java/me/horlick/helloworld).
 
 ### Upgrade
 
