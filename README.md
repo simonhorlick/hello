@@ -13,15 +13,15 @@ Each commit triggers a [Jenkins](https://ci.horlick.me/job/hello/) build which r
 
 ### Components
 
-[greeter](/java/me/horlick/apps/greeter) -- An Android frontend app that allows users to request a greeting from the `helloworld` server, which is then displayed to them.
+[/java/me/horlick/apps/greeter](/java/me/horlick/apps/greeter) -- An Android frontend app that allows users to request a greeting from the `helloworld` server, which is then displayed to them.
 
-[helloworld.proto](/protos/helloworld.proto) -- The service definition for the Greeter service.
+[/protos/helloworld.proto](/protos/helloworld.proto) -- The service definition for the Greeter service.
 
-[helloworld](/java/me/horlick/helloworld) -- A server that implements the Greeter service.
+[/java/me/horlick/helloworld](/java/me/horlick/helloworld) -- A server that implements the Greeter service.
 
-[helloworld_gateway_server](/go) -- A REST-based translation server for `helloworld`.
+[/go/helloworld_gateway_server](/go) -- A REST-based translation server for `helloworld`.
 
-[hellobigbang](/java/me/horlick/hellobigbang) -- Inserts random test data into the database.
+[/java/me/horlick/hellobigbang](/java/me/horlick/hellobigbang) -- Inserts random test data into the database.
 
 [vitess](/infra/db) -- The database that stores greetings.
 
